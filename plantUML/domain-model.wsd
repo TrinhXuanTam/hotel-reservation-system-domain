@@ -1,0 +1,80 @@
+@@startuml "hotel reservation system domain model"
+
+package "Hotel reservation system" {
+    
+    class Guest {
+        firstName: String
+        lastName: String
+        email: String
+        phoneNumber: String
+    }
+
+    class Address {
+        street: String
+        city: String
+        state: String
+        zipCode: String
+        country: String
+    }
+
+    class Room {
+        roomNumber: String
+        floor: Integer
+        isUnderMaintenance: Boolean
+        isCleaned: Boolean
+    }
+
+    class RoomType {
+        type: String
+        description: String
+        maxOccupancy: Integer
+        basePrice: Double
+        smoking: Boolean
+    }
+
+    class Amenity {
+        name: String
+        description: String
+    }
+
+    class Reservation {
+        reservationId: String
+        reservationDate: Date
+        checkInDate: Date
+        checkOutDate: Date
+        expectedCheckInDate: Date
+        expectedCheckOutDate: Date
+        numberOfAdults: Integer
+        numberOfChildren: Integer
+        notes: String
+    }
+
+    class Bill {
+        billId: String
+        dueDate: Date
+        totalAmount: Double
+        isPaid: Boolean
+    }
+
+    class Payment {
+        paymentId: String
+        paymentDate: Date
+    }
+
+    class CashPayment {}
+
+    class CardPayment {}
+
+    Guest "*" -left- "1" Address :  lives at
+    Guest "1" *-right- "*" Reservation : makes
+    Room "*" -left- "1" RoomType : is of type
+    Amenity "*" -up- "*" RoomType : has
+    Reservation "1" -- "1..*" Room : for
+    Reservation "1" *-- "1" Bill : for
+    Bill "1" *-- "*" Payment : paid for
+    Payment <|-- CashPayment
+    Payment <|-- CardPayment
+}
+
+
+@@enduml
